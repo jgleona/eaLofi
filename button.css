@@ -5,4 +5,10 @@
 
 .scroll-area {
   overflow-y: auto;
+
+}
+
+.order_number {
+  display: flex;
+  justify-content: space-between;
 }
