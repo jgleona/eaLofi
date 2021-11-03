@@ -1,0 +1,142 @@
+* {
+    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+    background-color: #FFFFFF;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+
+    border-radius: 5px;
+}
+
+body h1 {
+    font-weight: lighter;
+    margin: 10px 0px;
+    padding: 0px 10px;
+    border-bottom: 1px solid #E3E9ED;
+}
+
+.create-todo {
+    background-color: #00C805;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 0px 10px 0px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.create-todo:hover {
+    color: black;
+
+}
+
+.new-item {
+    width: 100%;
+    height: 120px;
+    display: none;
+
+    /* border: 1px solid blue; */
+}
+
+.input-wrapper {
+    width: 200px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0px 0px 10px 0px;
+}
+
+.save-cancel-wrapper {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 0px 5px;
+}
+
+.save-cancel-wrapper button {
+    border-radius: 5px;
+    height: 25px;
+    margin: 5px 0px;
+}
+
+.save-button {
+    border: none;
+    background-color: #00C805;
+    color: white;
+}
+
+.save-button:hover {
+    color: black;
+
+}
+
+.cancel-button {
+    background-color: #FFFFFF;
+    border: 1px solid #00C805;
+    color: #00C805;
+}
+
+.cancel-button:hover {
+    color: black;
+}
+
+
+.new-item input {
+    width: 90%;
+    border: 1px solid #E3E9ED;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.new-item input:hover {
+    border: 1px solid #FFFFFF;
+    box-shadow: 0 0 7.5px #E3E9ED; 
+}
+
+.todo-items,
+.todo-items li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.todo-items li {
+    padding: 10px;
+    border-bottom: 2px solid grey;
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo-items li:hover {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.todo-items li.done .item {
+    text-decoration: line-through;
+}
+
+.todo-items div span {
+    margin: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.todo-items .item {
+    display: flex;
+    justify-content: space-between;
+}

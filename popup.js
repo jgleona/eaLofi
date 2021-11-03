@@ -1,12 +1,11 @@
-
 var cartAmount = 0.0;
 var totalSpent = 0.0;
 var id = 0;
 //create-todo <- create todo button onclick open ".new-item"
 //new-item <- if button pressed it save & hide "new-item"
 
-document.querySelector('.create-todo').addEventListener('click',function(){
-    document.querySelector('.new-item').style.display='block';
+document.querySelector('.save-button').addEventListener('click', function () {
+    document.querySelector('.new-item').style.display = 'flex';
 });
 
 
@@ -23,22 +22,24 @@ document.querySelector('.new-item button').addEventListener('click',function(){
     var itemName = document.querySelector('.new-item #name').value;
     var itemPrice = document.querySelector('.new-item #price').value;
     var itemLink = document.querySelector('.new-item #link').value;
-    if (itemName != ''){
+    alert(itemName);
+
+    if (itemName != '') {
 
         var itemsStorage = localStorage.getItem('todo-items');
         var itemsArr = JSON.parse(itemsStorage);
-            // now let's check if the stored value is an array
+        // now let's check if the stored value is an array
         if(!(itemsArr instanceof Array)) {
             itemsArr = []; // if not, create one
         }
-        itemsArr.push({"item":itemName, "itemPrice":itemPrice, "itemLink":itemLink, "status":0}); 
+        itemsArr.push({ "item": itemName, "itemPrice": itemPrice, "itemLink": itemLink, "status": 0 });
 
         saveItems(itemsArr);
         fetchItems();
         document.querySelector('.new-item #name').value = '';
         document.querySelector('.new-item #price').value = '';
         document.querySelector('.new-item #link').value = '';
-        document.querySelector('.new-item').style.display='none';
+        document.querySelector('.new-item').style.display = 'none';
     }
 });
 
@@ -79,7 +80,7 @@ function fetchBoughtItems(){
     }
 }
 
-function fetchItems(){
+function fetchItems() {
 
     const itemsList = document.querySelector('ul.todo-items');
     const cartAmountObj = document.querySelector('#cart-amount');
@@ -120,7 +121,7 @@ function fetchItems(){
                 fetchBoughtItems();
                 fetchItems();
             });
-            itemsListUL[i].querySelector('.itemDelete').addEventListener('click', function(){
+            itemsListUL[i].querySelector('.itemDelete').addEventListener('click', function () {
                 //
                 var index = this.parentNode.parentNode.dataset.itemindex;
                 var itemPrice = parseFloat(itemDelete(index));
@@ -134,6 +135,7 @@ function fetchItems(){
     }
 
 }
+
 
 function itemBought(index) {
     var itemsStorage = localStorage.getItem('todo-items');
@@ -152,7 +154,6 @@ function itemBought(index) {
         itemsBoughtArr = []; 
     }
     itemsBoughtArr.push(itemToBuy); 
-
 
     itemsArr.splice(index, 1);
 
@@ -181,7 +182,7 @@ function itemDelete(index) {
     return itemPrice;
 }
 
-function saveItems(obj){
+function saveItems(obj) {
 
     var string = JSON.stringify(obj);
 
