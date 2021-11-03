@@ -24,57 +24,36 @@
 </html> -->
 
 <!DOCTYPE html>
-  <head>
-    <meta charset="utf-8">
-    <title>Universal Shopping Cart</title>
-    <style>
-    body{width:300px;}
-    .todo-items,
-    .todo-items li{
-      margin:0;
-      padding:0;
-      list-style: none;
-    }
-    .todo-items li{
-      padding:10px;
-      border-bottom: 2px solid grey;
-      display:flex;
-      justify-content: space-between;
-    }
-    .todo-items li:hover{
-      background:rgba(0,0,0,0.25);
-    }
-    .todo-items li.done .item{
-      text-decoration: line-through;
-    }
-    .todo-items div span{
-      margin:5px;
-      font-size:1em;
-      cursor: pointer;
-    }
-    .todo-items .item{
-      display: flex;
-      justify-content: space-between;
-    }
-    .new-item{
-      display:none;
-    }
-    </style>
-  </head>
-  <body>
-    <h1>My Shopping List</h1>
 
-    <button class="create-todo">New Item</button>
-    <div class="new-item">
-      <input id="name" type="text" placeholder="name"/>
-      <input id="price" type="text" placeholder="price" step="0.01" min="0"/>
-      <input id="link" type="text" placeholder="link"/>
-      <button>Save</button>
+<head>
+  <meta charset="utf-8">
+  <title>Universal Shopping Cart</title>
+
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+
+  <h1>Easy Access Shopping</h1>
+
+  <button class="create-todo">New Item</button>
+  <div class="new-item">
+    <div class="input-wrapper">
+      <input id="name" type="text" placeholder="name" />
+      <input id="price" type="text" placeholder="price" step="0.01" min="0" />
+      <input id="link" type="text" placeholder="link" />
     </div>
 
-    <ul class="todo-items">
-    </ul>
+    <div class="save-cancel-wrapper">
+      <button class="save-button">Save</button>
+      <button class="cancel-button">Cancel</button>
+    </div>
+  </div>
 
-    <script src="popup.js"></script>
-  </body>
+  <ul class="todo-items">
+  </ul>
+
+  <script src="popup.js"></script>
+</body>
+
 </html>
