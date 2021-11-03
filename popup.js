@@ -1,101 +1,24 @@
-// let all_listings = [];
-// let key = 0;
-
-// const form  = document.getElementById('add-item');
-// // $('.entry-remove-btn').click(function() {
-// //     alert("got in");
-// //     $(this).parent('div.order_number').remove();
-// // });
-
-// function removeItem() {
-//     alert("got in");
-//     $(this).parent('div.order_number').remove();
-// }
-
-// form.addEventListener('submit', (event) => {
-//     var scrollbar = $('.scroll-area');
-//     var product_name = form.elements['pname'].value;
-//     var price = form.elements['price'].value;
-//     var entry_str = "<div class='order_number' id='" + key.toString() + "'> <p>" + product_name + "</p> <p>" + price + "</p> <input type='button' class='entry-remove-btn' value='remove' onclick='removeItem()' />  </div>";
-
-
-//     let listing = {
-//         "key": key,
-//         "product_name": product_name,
-//         "price": price,
-//     };
-
-//     all_listings.push(listing);
-//     // alert("all" + all_listings.length);
-//     // let newItemKey = "item" + key.toString();
-//     // key++;
-//     // chrome.storage.local.set({'test_string': "test1"});
-//     // chrome.storage.local.set({newItemKey: listing}, function() {
-//     //     alert('successfully added item:');
-//     // });
-
-//     // chrome.storage.local.get(['ea_all_items'], function(result) {
-//     //     alert("here here");
-//     //     alert(result.item0);
-//     //     // all_listings = result.append(listing);
-//     // });
-//     // chrome.storage.local.get(['test_string'], function(result) {
-//     //     alert("here here");
-//     //     alert(result.test_string);
-//     // });
-//     scrollbar.append(entry_str);
-
-//     event.preventDefault();
-//     // Clear text fields
-//     $('#pname').val("");
-//     $('#price').val("");
-// });
-
-// $(document).ready(function () {
-// $('.entry-remove-btn').on('click',function(){
-//     alert("got in");
-//     $(this).parent('div.order_number').remove();
-// });
-
-
-
-
-// var scrollbar = $('.scroll-area');
-// chrome.storage.local.get(['ea_all_items'], function(result) {
-//     if (result.ea_all_items != undefined) {
-//         alert("data exists");
-//         for (let i = 0; i < result.ea_all_items.length; ++i) {
-//             let entry_str = "<div> <p>" + result.ea_all_items[i].product_name + "</p> <p>" + result.ea_all_items[i].price + "</p>  </div>";
-//             scrollbar.append(entry_str);
-//             alert(entry_str);
-//             let listing = {
-//                 "product_name": result.ea_all_items[i].product_name,
-//                 "price": result.ea_all_items[i].price,
-//             }
-
-//             all_listings.push(listing);
-//         }
-//     }
-//     else {
-//         alert("no data exist");
-//     }
-// });
-// });
-
-
-
-
-
-
-
+var cartAmount = 0.0;
+var totalSpent = 0.0;
+var id = 0;
 //create-todo <- create todo button onclick open ".new-item"
 //new-item <- if button pressed it save & hide "new-item"
 
-document.querySelector('.create-todo').addEventListener('click', function () {
+document.querySelector('.save-button').addEventListener('click', function () {
     document.querySelector('.new-item').style.display = 'flex';
 });
 
-document.querySelector('.save-button').addEventListener('click', function () {
+
+document.querySelector('.purchases button').addEventListener('click',function(){
+    clearBoughtItems();
+    document.querySelector('ul.bought-items').innerHTML = '';
+    totalSpent = 0.0;
+    let spentHTML = `<h1>0 dollars</h1>`
+    document.querySelector('.total-spent').innerHTML = spentHTML;
+
+});
+
+document.querySelector('.new-item button').addEventListener('click',function(){
     var itemName = document.querySelector('.new-item #name').value;
     var itemPrice = document.querySelector('.new-item #price').value;
     var itemLink = document.querySelector('.new-item #link').value;
@@ -106,8 +29,8 @@ document.querySelector('.save-button').addEventListener('click', function () {
         var itemsStorage = localStorage.getItem('todo-items');
         var itemsArr = JSON.parse(itemsStorage);
         // now let's check if the stored value is an array
-        if (!(itemsArr instanceof Array)) {
-            itemsArr = [itemsArr]; // if not, create one
+        if(!(itemsArr instanceof Array)) {
+            itemsArr = []; // if not, create one
         }
         itemsArr.push({ "item": itemName, "itemPrice": itemPrice, "itemLink": itemLink, "status": 0 });
 
@@ -120,72 +43,143 @@ document.querySelector('.save-button').addEventListener('click', function () {
     }
 });
 
+function initialize() {
+    
+}
+
+function fetchBoughtItems(){
+    const boughtItemsList = document.querySelector('ul.bought-items');
+    boughtItemsList.innerHTML = '';
+    var newBoughtItemHTML = '';
+   
+    try{
+        var boughtItemsStorage = localStorage.getItem('bought-items');
+        var boughtItemsArr = JSON.parse(boughtItemsStorage);
+        if(!(boughtItemsArr instanceof Array)) {
+            boughtItemsArr = []; // if not, create one
+
+        }
+        else {
+            alert("LENGTH" + boughtItemsArr.length);
+            totalSpent = 0.0;
+            for (let i = 0; i < boughtItemsArr.length; i++) {
+                // alert(boughtItemsArr[i]);
+                totalSpent += parseFloat(boughtItemsArr[i].itemPrice);
+                newBoughtItemHTML += `<li> <span class="bought-item"><p><a target='_blank' href='${boughtItemsArr[i].itemLink}'>${boughtItemsArr[i].item}</a></p> <p>${boughtItemsArr[i].itemPrice}</p></span></li>`;
+    
+                // newBoughtItemHTML += "<p> Bought Item </p>";
+            }
+        }
+        
+        let spentHTML = `<h1>${totalSpent} dollars</h1>`
+        document.querySelector('.total-spent').innerHTML = spentHTML;
+        boughtItemsList.innerHTML = newBoughtItemHTML;
+        
+    }catch(e){
+        alert("ERROR in bought items");
+    }
+}
 
 function fetchItems() {
 
     const itemsList = document.querySelector('ul.todo-items');
+    const cartAmountObj = document.querySelector('#cart-amount');
     itemsList.innerHTML = '';
     var newItemHTML = '';
-    try {
+    
+    try{
         var itemsStorage = localStorage.getItem('todo-items');
         var itemsArr = JSON.parse(itemsStorage);
-
-        for (var i = 0; i < itemsArr.length; i++) {
-            var status = '';
-            if (itemsArr[i].status == 1) {
-                status = 'class="done"';
-            }
-            newItemHTML += `<li data-itemindex="${i}" ${status}>
-            <span class="item"><p><a target='_blank' href='${itemsArr[i].itemLink}'>${itemsArr[i].item}</a></p> <p>${itemsArr[i].itemPrice}</p></span>
-            <div><span class="itemComplete">✅</span><span class="itemDelete">🗑</span></div>
-            </li>`;
+        cartAmount = 0.0;
+        if(!(itemsArr instanceof Array)) {
+            itemsArr = []; 
         }
-
+        else {
+            for (var i = 0; i < itemsArr.length; i++) {
+                var status = '';
+                if(itemsArr[i].status == 1){
+                    status = 'class="done"';
+                }
+                cartAmount += parseFloat(itemsArr[i].itemPrice);
+                newItemHTML += `<li data-itemindex="${i}" ${status}>
+                <span class="item"><p><a target='_blank' href='${itemsArr[i].itemLink}'>${itemsArr[i].item}</a></p> <p>${itemsArr[i].itemPrice}</p></span>
+                <div><span class="itemBought">✅</span><span class="itemDelete">🗑</span></div>
+                </li>`;
+            }
+        }
+        cartAmountObj.innerHTML = `Cart Value: $${cartAmount}`;
         itemsList.innerHTML = newItemHTML;
-
-        var itemsListUL = document.querySelectorAll('ul li');
+        
+        var itemsListUL = document.querySelectorAll('ul.todo-items li');
         for (var i = 0; i < itemsListUL.length; i++) {
-            itemsListUL[i].querySelector('.itemComplete').addEventListener('click', function () {
+            itemsListUL[i].querySelector('.itemBought').addEventListener('click', function(){
                 //
                 var index = this.parentNode.parentNode.dataset.itemindex;
-                itemComplete(index);
+                var itemPrice = parseFloat(itemBought(index));
+                cartAmount -= itemPrice;
+                cartAmountObj.innerHTML = `Cart Value: $${cartAmount}`;
+                fetchBoughtItems();
+                fetchItems();
             });
             itemsListUL[i].querySelector('.itemDelete').addEventListener('click', function () {
                 //
                 var index = this.parentNode.parentNode.dataset.itemindex;
-                itemDelete(index);
+                var itemPrice = parseFloat(itemDelete(index));
+                cartAmount -= itemPrice;
+                cartAmountObj.innerHTML = `Cart Value: $${cartAmount}`;
+                fetchItems();
             });
         }
-    } catch (e) {
-        //.
-        //create a deafut item list..
+    }catch(e){
+        alert("ERROR in list items");
     }
 
 }
 
-function itemComplete(index) {
 
+function itemBought(index) {
     var itemsStorage = localStorage.getItem('todo-items');
     var itemsArr = JSON.parse(itemsStorage);
+    var itemToBuy = itemsArr[index];
+    var itemPrice = itemToBuy.itemPrice;
+    totalSpent += parseFloat(itemPrice);
 
-    itemsArr[index].status = 1;
+    let spentHTML = `<h1>${totalSpent} dollars</h1>`
+    document.querySelector('.total-spent').innerHTML = spentHTML;
+    var itemsBought = localStorage.getItem('bought-items');
+    var itemsBoughtArr = JSON.parse(itemsBought);
 
-    saveItems(itemsArr);
 
-    document.querySelector('ul.todo-items li[data-itemindex="' + index + '"]').className = 'done';
-
-}
-function itemDelete(index) {
-
-    var itemsStorage = localStorage.getItem('todo-items');
-    var itemsArr = JSON.parse(itemsStorage);
+    if(!(itemsBoughtArr instanceof Array)) {
+        itemsBoughtArr = []; 
+    }
+    itemsBoughtArr.push(itemToBuy); 
 
     itemsArr.splice(index, 1);
 
     saveItems(itemsArr);
+    saveBoughtItems(itemsBoughtArr);
+    alert(JSON.stringify(itemsBoughtArr));
+    document.querySelector('ul.todo-items li[data-itemindex="'+index+'"]').remove();
+    return itemPrice;
+}
 
-    document.querySelector('ul.todo-items li[data-itemindex="' + index + '"]').remove();
+function itemDelete(index) {
+    
+    var itemsStorage = localStorage.getItem('todo-items');
+    var itemsArr = JSON.parse(itemsStorage);
+    if(!(itemsArr instanceof Array)) {
+        itemsArr = []; 
+    }
+    alert("item Delete: " + itemsArr[index]);
+    alert("length" + itemsArr.length);
+    var itemPrice = itemsArr[index].itemPrice;
+    itemsArr.splice(index, 1);
 
+    saveItems(itemsArr);
+
+    document.querySelector('ul.todo-items li[data-itemindex="'+index+'"]').remove();
+    return itemPrice;
 }
 
 function saveItems(obj) {
@@ -196,5 +190,21 @@ function saveItems(obj) {
 
 }
 
+function saveBoughtItems(obj){
+
+    var string = JSON.stringify(obj);
+
+    localStorage.setItem('bought-items', string);
+
+}
+
+
+
+function clearBoughtItems(){
+    localStorage.removeItem('bought-items');
+}
+
+
 
 fetchItems();
+fetchBoughtItems();
