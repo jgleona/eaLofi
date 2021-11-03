@@ -12,16 +12,15 @@ document.querySelector('.purchases button').addEventListener('click', function (
     clearBoughtItems();
     document.querySelector('ul.bought-items').innerHTML = '';
     totalSpent = 0.0;
-    let spentHTML = `<h1>0 dollars</h1>`
+    let spentHTML = `<p>$ 0</p>`
     document.querySelector('.total-spent').innerHTML = spentHTML;
 
 });
 
 document.querySelector('.save-button').addEventListener('click', function () {
     var itemName = document.querySelector('.new-item #name').value;
-    var itemPrice = document.querySelector('.new-item #price').value;
+    var itemPrice = parseFloat(document.querySelector('.new-item #price').value).toFixed(2);
     var itemLink = document.querySelector('.new-item #link').value;
-    alert(itemName);
 
     if (itemName != '') {
 
@@ -65,18 +64,24 @@ function fetchBoughtItems() {
 
         }
         else {
-            alert("LENGTH" + boughtItemsArr.length);
+            // alert("LENGTH" + boughtItemsArr.length);
             totalSpent = 0.0;
             for (let i = 0; i < boughtItemsArr.length; i++) {
                 // alert(boughtItemsArr[i]);
                 totalSpent += parseFloat(boughtItemsArr[i].itemPrice);
-                newBoughtItemHTML += `<li> <span class="bought-item"><p><a target='_blank' href='${boughtItemsArr[i].itemLink}'>${boughtItemsArr[i].item}</a></p> <p>${boughtItemsArr[i].itemPrice}</p></span></li>`;
+                newBoughtItemHTML +=
+                    `<li>
+                        <div class="bought-item">
+                            <p><a target='_blank' href='${boughtItemsArr[i].itemLink}'>${boughtItemsArr[i].item}</a></p>
+                            <p>${boughtItemsArr[i].itemPrice}</p>
+                        </div>
+                    </li>`;
 
                 // newBoughtItemHTML += "<p> Bought Item </p>";
             }
         }
 
-        let spentHTML = `<h1>${totalSpent} dollars</h1>`
+        let spentHTML = `<p>Total: $${totalSpent}</p>`
         document.querySelector('.total-spent').innerHTML = spentHTML;
         boughtItemsList.innerHTML = newBoughtItemHTML;
 
@@ -98,10 +103,8 @@ function fetchItems() {
         cartAmount = 0.0;
         if (!(itemsArr instanceof Array)) {
             itemsArr = [];
-            alert("in if");
         }
         else {
-            alert("in else");
 
             for (var i = 0; i < itemsArr.length; i++) {
                 // alert("In loop");
@@ -114,15 +117,20 @@ function fetchItems() {
                     status = 'class="done"';
                 }
                 cartAmount += parseFloat(itemsArr[i].itemPrice);
-                newItemHTML += `<li data-itemindex="${i}" ${status}>
-                <span class="item"><p><a target='_blank' href='${itemsArr[i].itemLink}'>${itemsArr[i].item}</a></p> <p>${itemsArr[i].itemPrice}</p></span>
-                <div><span class="itemBought">✅</span><span class="itemDelete">🗑</span></div>
-                </li>`;
+                newItemHTML +=
+                    `<li data-itemindex="${i}" ${status}>
+                        <div class="item">
+                            <p><a target='_blank' href='${itemsArr[i].itemLink}'>${itemsArr[i].item}</a></p>
+                            <p>${itemsArr[i].itemPrice}</p>
+                        </div >
+                        <div>
+                            <div class="itemBought">✅</div>
+                            <div class="itemDelete">🗑</div>
+                        </div>
+                    </li>`;
             }
         }
-        alert("line 110");
         cartAmountObj.innerHTML = `Cart Value: $${cartAmount}`;
-        alert("line 116");
         itemsList.innerHTML = newItemHTML;
 
         var itemsListUL = document.querySelectorAll('ul.todo-items li');
@@ -159,7 +167,7 @@ function itemBought(index) {
     var itemPrice = itemToBuy.itemPrice;
     totalSpent += parseFloat(itemPrice);
 
-    let spentHTML = `<h1>${totalSpent} dollars</h1>`
+    let spentHTML = `<p>$ ${totalSpent}</p>`
     document.querySelector('.total-spent').innerHTML = spentHTML;
     var itemsBought = localStorage.getItem('bought-items');
     var itemsBoughtArr = JSON.parse(itemsBought);
@@ -174,7 +182,6 @@ function itemBought(index) {
 
     saveItems(itemsArr);
     saveBoughtItems(itemsBoughtArr);
-    alert(JSON.stringify(itemsBoughtArr));
     document.querySelector('ul.todo-items li[data-itemindex="' + index + '"]').remove();
     return itemPrice;
 }
@@ -186,8 +193,6 @@ function itemDelete(index) {
     if (!(itemsArr instanceof Array)) {
         itemsArr = [];
     }
-    alert("item Delete: " + itemsArr[index]);
-    alert("length" + itemsArr.length);
     var itemPrice = itemsArr[index].itemPrice;
     itemsArr.splice(index, 1);
 
