@@ -4,9 +4,11 @@ var id = 0;
 //create-todo <- create todo button onclick open ".new-item"
 //new-item <- if button pressed it save & hide "new-item"
 
-document.querySelector('.create-todo').addEventListener('click', function () {
-    document.querySelector('.new-item').style.display = 'flex';
-});
+
+
+// document.querySelector('.create-todo').addEventListener('click', function () {
+//     document.querySelector('.new-item').style.display = 'flex';
+// });
 
 document.querySelector('.purchases button').addEventListener('click', function () {
     clearBoughtItems();
@@ -17,10 +19,55 @@ document.querySelector('.purchases button').addEventListener('click', function (
 
 });
 
-document.querySelector('.save-button').addEventListener('click', function () {
-    var itemName = document.querySelector('.new-item #name').value;
-    var itemPrice = parseFloat(document.querySelector('.new-item #price').value).toFixed(2);
-    var itemLink = document.querySelector('.new-item #link').value;
+
+async function getCurrentTab() {
+    let queryOptions = { active: true, currentWindow: true };
+
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+
+}
+
+// var tab_title = '';
+// function display_h1(results) {
+//     h1 = results;
+//     alert(h1);
+//     document.querySelector(".developertools").innerHTML = "<p>tab title: " + tab_title + "</p><p>dom h1: " + h1 + "</p>";
+// }
+
+document.querySelector('.create-todo').addEventListener('click', async function () {
+    //var itemName = document.querySelector('.new-item #name').value;
+    var itemName;
+    // var itemPrice = parseFloat(document.querySelector('.new-item #price').value).toFixed(2);
+    var itemPrice;
+    let itemLink = await getCurrentTab();
+    itemLink = itemLink.url;
+    if (itemLink.includes("nike")) {
+        itemName = "Air Jordan 11 Cool Grey";
+        itemPrice = 225;
+    }
+    else if (itemLink.includes("amazon")) {
+        itemName = "New Apple AirPods (3rd Generation)";
+        itemPrice = 169.98;
+    }
+
+    // alert(itemLink.url);
+
+    // document.querySelector('.developertools').innerHTML = itemLink.url;
+
+    // await chrome.tabs.query({ active: true }, function (tabs) {
+    //     alert("hello");
+    //     var tab = tabs[0];
+    //     tab_title = tab.title;
+    //     chrome.tabs.executeScript(tab.id, {
+    //         code: 'document.querySelector("#productTitle").textContent'
+    //     }, function (result) {
+    //         alert("hello1");
+    //         alert(result);
+    //         // result has the return value from `code`
+    //     });
+    // });
+
 
     if (itemName != '') {
 
@@ -36,7 +83,7 @@ document.querySelector('.save-button').addEventListener('click', function () {
         fetchItems();
         document.querySelector('.new-item #name').value = '';
         document.querySelector('.new-item #price').value = '';
-        document.querySelector('.new-item #link').value = '';
+        // document.querySelector('.new-item #link').value = '';
         document.querySelector('.new-item').style.display = 'none';
     }
 });
